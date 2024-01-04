@@ -1,0 +1,61 @@
+managed implementation in class zbp_i_student_root1 unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_STUDENT_ROOT1 alias Student
+persistent table zrap_student
+draft table zstudent_draft
+lock master total etag LastChangedAt
+authorization master ( instance )
+etag master LocalLastChangedAt
+{
+  create;
+  update;
+  delete;
+
+  draft action Edit;
+  draft action Resume;
+  draft action Activate;
+  draft action Discard;
+  draft determine action Prepare;
+   field( numbering : managed, readonly )Id; //made as readonly and numbering managed automatically
+  field( readonly )Genderdesc;
+  //Below adding action feature instance
+    action( features : instance ) setAdmitted result [1] $self;
+  association _academicres { create; with draft;}
+  validation ValidateAge on save { field Age; create; }
+      mapping for zrap_student
+    {
+        Id = id;
+        Firstname       =  firstname;
+        Lastname        =  lastname;
+        Age             =  age;
+        Course          =  course;
+        Courseduration  =  courseduration;
+        Status          =  status;
+        Gender          =  gender;
+        Dob             =  dob;
+    }
+}
+
+define behavior for ZI_ACADEMIC_RESULT1 alias Academics
+persistent table zrap_academic
+draft table zacademics_draft
+lock dependent by _student
+authorization dependent by _student
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+  field ( readonly ) Id,CourseDesc,SemesterDesc,SEMRESULT_DESC;
+//  field( readonly )localLastChangedAt,LastChangedAt;
+  association _student{ with draft; }
+    mapping for zrap_academic{
+    Id = id;
+    Course = course;
+    Semester = semester;
+    Semresult = semresult;
+    LocalLastChangedAt = local_last_changed_at;
+    LastChangedAt = last_changed_at;
+    }
+}

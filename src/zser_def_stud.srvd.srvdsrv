@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service deifinition for Student'
+define service Zser_def_stud {
+  expose ZC_STUDENT_PROJECTION   as student;
+  expose ZC_ACADEMICS_PROJECTION as AcademicResults;
+}

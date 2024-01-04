@@ -1,0 +1,5 @@
+CLASS zbp_i_student_root DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zi_student_root.
+ENDCLASS.
+
+CLASS zbp_i_student_root IMPLEMENTATION.
+ENDCLASS.
